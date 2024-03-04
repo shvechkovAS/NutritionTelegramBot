@@ -5,8 +5,6 @@ meta:
     name: maven
     version: 17
 build:
-  artifacts:
-    target/*.jar: /
   args: spring-boot:repackage -Pnative
 run:
   jarName: NutritionTelegramBot-0.0.1.jar
