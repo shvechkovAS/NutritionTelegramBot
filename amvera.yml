@@ -4,8 +4,7 @@ meta:
   toolchain:
     name: maven
     version: 17
-build:
-  args: spring-boot:repackage -Pnative
+build: {}
 run:
   jarName: NutritionTelegramBot-0.0.1.jar
   persistenceMount: /data
