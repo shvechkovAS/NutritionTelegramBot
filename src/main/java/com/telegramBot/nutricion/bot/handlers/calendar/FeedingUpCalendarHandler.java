@@ -52,21 +52,21 @@ public class FeedingUpCalendarHandler implements InputMessageHandler {
         SendPhoto calendar = new SendPhoto(
                 chatId,
                 new InputFile(
-                        this.getClass().getResourceAsStream("pics/feeding/calendar.jpg"),
+                        this.getClass().getResourceAsStream("/pics/feeding/calendar.jpg"),
                         "calendar"));
         calendar.setCaption("Календарь введения прикормов");
 
         SendPhoto rules = new SendPhoto(
                 chatId,
                 new InputFile(
-                        this.getClass().getResourceAsStream("pics/feeding/rules.jpg"),
+                        this.getClass().getResourceAsStream("/pics/feeding/rules.jpg"),
                         "rules"));
         rules.setCaption("Правила введения прикормов");
 
         SendPhoto dayVolume = new SendPhoto(
                 chatId,
                 new InputFile(
-                        this.getClass().getResourceAsStream("pics/feeding/dayVolume.jpg"),
+                        this.getClass().getResourceAsStream("/pics/feeding/dayVolume.jpg"),
                         "dayVolume"));
         dayVolume.setCaption("Суточный объём прикормов");
 
