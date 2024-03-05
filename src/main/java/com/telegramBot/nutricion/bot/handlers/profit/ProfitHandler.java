@@ -14,7 +14,6 @@ import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
-import java.io.File;
 import java.util.Objects;
 
 @Component
@@ -73,10 +72,7 @@ public class ProfitHandler  implements InputMessageHandler {
                     replyPhoto = new SendPhoto(
                             chatId,
                             new InputFile(
-                                    new File(getClass()
-                                            .getClassLoader()
-                                            .getResource("pics/products/vegetablePuree.jpg")
-                                            .getFile()),
+                                    this.getClass().getResourceAsStream("pics/products/vegetablePuree.jpg"),
                                     "vegetablePuree"));
                     replyPhoto.setCaption("Овощное пюре");
                     break;
@@ -84,10 +80,7 @@ public class ProfitHandler  implements InputMessageHandler {
                     replyPhoto = new SendPhoto(
                             chatId,
                             new InputFile(
-                                    new File(getClass()
-                                            .getClassLoader()
-                                            .getResource("pics/products/fruitPuree.jpg")
-                                            .getFile()),
+                                    this.getClass().getResourceAsStream("pics/products/fruitPuree.jpg"),
                                     "fruitPuree"));
                     replyPhoto.setCaption("Фруктовое пюре");
                     break;
@@ -95,10 +88,7 @@ public class ProfitHandler  implements InputMessageHandler {
                     replyPhoto = new SendPhoto(
                             chatId,
                             new InputFile(
-                                    new File(getClass()
-                                            .getClassLoader()
-                                            .getResource("pics/products/porridge.jpg")
-                                            .getFile()),
+                                    this.getClass().getResourceAsStream("pics/products/porridge.jpg"),
                                     "porridge"));
                     replyPhoto.setCaption("Каша");
                     break;
@@ -106,10 +96,7 @@ public class ProfitHandler  implements InputMessageHandler {
                     replyPhoto = new SendPhoto(
                             chatId,
                             new InputFile(
-                                    new File(getClass()
-                                            .getClassLoader()
-                                            .getResource("pics/products/meatPuree.jpg")
-                                            .getFile()),
+                                    this.getClass().getResourceAsStream("pics/products/meatPuree.jpg"),
                                     "meatPuree"));
                     replyPhoto.setCaption("Мясное пюре");
                     break;
@@ -117,10 +104,7 @@ public class ProfitHandler  implements InputMessageHandler {
                     replyPhoto = new SendPhoto(
                             chatId,
                             new InputFile(
-                                    new File(getClass()
-                                            .getClassLoader()
-                                            .getResource("pics/products/fish.jpg")
-                                            .getFile()),
+                                    this.getClass().getResourceAsStream("pics/products/fish.jpg"),
                                     "fish"));
                     replyPhoto.setCaption("Рыба");
                     break;
@@ -128,10 +112,7 @@ public class ProfitHandler  implements InputMessageHandler {
                     replyPhoto = new SendPhoto(
                             chatId,
                             new InputFile(
-                                    new File(getClass()
-                                            .getClassLoader()
-                                            .getResource("pics/products/butter.jpg")
-                                            .getFile()),
+                                    this.getClass().getResourceAsStream("pics/products/butter.jpg"),
                                     "butter"));
                     replyPhoto.setCaption("Масло");
                     break;
@@ -139,10 +120,7 @@ public class ProfitHandler  implements InputMessageHandler {
                     replyPhoto = new SendPhoto(
                             chatId,
                             new InputFile(
-                                    new File(getClass()
-                                            .getClassLoader()
-                                            .getResource("pics/products/eggYolk.jpg")
-                                            .getFile()),
+                                    this.getClass().getResourceAsStream("pics/products/eggYolk.jpg"),
                                     "eggYolk"));
                     replyPhoto.setCaption("Яичный желток");
                     break;
@@ -150,10 +128,7 @@ public class ProfitHandler  implements InputMessageHandler {
                     replyPhoto = new SendPhoto(
                             chatId,
                             new InputFile(
-                                    new File(getClass()
-                                            .getClassLoader()
-                                            .getResource("pics/products/fermentedMilkProducts.jpg")
-                                            .getFile()),
+                                    this.getClass().getResourceAsStream("pics/products/fermentedMilkProducts.jpg"),
                                     "fermentedMilkProducts"));
                     replyPhoto.setCaption("Кисломолочные продуты");
                     break;
@@ -161,10 +136,7 @@ public class ProfitHandler  implements InputMessageHandler {
                     replyPhoto = new SendPhoto(
                             chatId,
                             new InputFile(
-                                    new File(getClass()
-                                            .getClassLoader()
-                                            .getResource("pics/products/juices.jpg")
-                                            .getFile()),
+                                    this.getClass().getResourceAsStream("pics/products/juices.jpg"),
                                     "juices"));
                     replyPhoto.setCaption("Соки");
                     break;
