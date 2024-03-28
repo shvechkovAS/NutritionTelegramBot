@@ -168,20 +168,15 @@ public class FillingQuestionnaireHandler implements InputMessageHandler {
             nutritionQuestionnaireService.menuText(questionnaireData);
             botCache.setUsersCurrentBotState(userId, BotState.SHOW_START_MENU);
 
-            String builder = questionnaireData.getTextMassBodyIndex()
-                    + "\n\n"
-                    + "Один приём пищи для вашего ребёнка должен укладываться в "
-                    + questionnaireData.getOneVolume()
-                    + " мл (Разовый объём).\n\n"
-                    + questionnaireData.getMenu();
-            replyToUser = new SendMessage(chatId, builder);
-            if(Objects.isNull(questionnaireData.getDescription()) || questionnaireData.getDescription().isEmpty()){
+            replyToUser = new SendMessage(chatId, questionnaireData.getDescription());
+
+            if(Objects.isNull(questionnaireData.getMenu()) || questionnaireData.getMenu().isEmpty()){
                 replyToUser.setReplyMarkup(buttonsService.setBacktrackButton());
             }
             messages.add(replyToUser);
 
-            if(Objects.nonNull(questionnaireData.getDescription()) && !questionnaireData.getDescription().isEmpty()){
-                replyToUser = new SendMessage(chatId, questionnaireData.getDescription());
+            if(Objects.nonNull(questionnaireData.getMenu()) && !questionnaireData.getMenu().isEmpty()){
+                replyToUser = new SendMessage(chatId, questionnaireData.getMenu());
                 replyToUser.setReplyMarkup(buttonsService.setBacktrackButton());
                 messages.add(replyToUser);
             }

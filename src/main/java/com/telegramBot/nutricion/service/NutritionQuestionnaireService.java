@@ -30,11 +30,10 @@ public class NutritionQuestionnaireService {
         } else {
             oneVolume = dayVolume / 5.00;
         }
-        String formattedOneVolume = String.format("%.0f", oneVolume);
-        nutritionQuestionnaire.setOneVolume(formattedOneVolume);
+        nutritionQuestionnaire.setOneVolume(oneVolume);
 
         double heightInMeters = (double) height / 100;
-        double massBodyIndex = weight / (heightInMeters * heightInMeters);
+         double massBodyIndex = weight / (heightInMeters * heightInMeters);
         generateCodeMassBodyIndex(nutritionQuestionnaire, massBodyIndex);
         generateTextMassBodyIndex(nutritionQuestionnaire);
     }
@@ -139,227 +138,452 @@ public class NutritionQuestionnaireService {
         int illness =  nutritionQuestionnaire.getIllness();
         int codeIMT = nutritionQuestionnaire.getCodeMassBodyIndex();
         int babyAge = Integer.parseInt(nutritionQuestionnaire.getBabyAge());
+        double oneVolume = nutritionQuestionnaire.getOneVolume();
         switch (codeIMT) {
             case CodeBodyMassIndex.CODE_NORMAL:
                 if (illness == Illness.NO_ILLNESS) {
                     switch (babyAge) {
                         case 1, 2, 3, 4:
-                            nutritionQuestionnaire.setMenu(TextNormal.MENU_FOURTH);
+                            nutritionQuestionnaire.setDescription(TextNormal.DESCRIPTION_FOURTH);
                             break;
                         case 5:
-                            nutritionQuestionnaire.setMenu(TextNormal.MENU_FIFTH_HEALTHY);
-                            nutritionQuestionnaire.setDescription(TextNormal.DESCRIPTION_FIFTH_HEALTHY);
+                            nutritionQuestionnaire.setDescription(
+                                    String.format(TextNormal.DESCRIPTION_FIFTH_HEALTHY,
+                                            nutritionQuestionnaire.getTextMassBodyIndex(), oneVolume)
+                            );
+                            nutritionQuestionnaire.setMenu(
+                                    String.format(TextNormal.MENU_FIFTH_HEALTHY,
+                                            oneVolume, oneVolume-11, oneVolume, oneVolume, oneVolume, oneVolume,
+                                            oneVolume, oneVolume-11, oneVolume-78, oneVolume-78, oneVolume, oneVolume,
+                                            oneVolume, oneVolume-81, oneVolume-76, oneVolume-76, oneVolume-76, oneVolume,
+                                            oneVolume, oneVolume-100, oneVolume-76, oneVolume-100, oneVolume-76, oneVolume)
+                            );
                             break;
                         case 6:
-                            nutritionQuestionnaire.setMenu(TextNormal.MENU_SIXTH_HEALTHY);
-                            nutritionQuestionnaire.setDescription(TextNormal.DESCRIPTION_SIXTH_HEALTHY);
+                            nutritionQuestionnaire.setDescription(
+                                    String.format(TextNormal.DESCRIPTION_SIXTH_HEALTHY,
+                                            nutritionQuestionnaire.getTextMassBodyIndex(), oneVolume)
+                            );
+                            nutritionQuestionnaire.setMenu(
+                                    String.format(TextNormal.MENU_SIXTH_HEALTHY,
+                                            oneVolume, oneVolume-102, oneVolume-122, oneVolume-80, oneVolume,
+                                            oneVolume, oneVolume-124, oneVolume-135, oneVolume-110, oneVolume)
+                            );
                             break;
                         case 7:
-                            nutritionQuestionnaire.setMenu(TextNormal.MENU_SEVENTH_HEALTHY);
-                            nutritionQuestionnaire.setDescription(TextNormal.DESCRIPTION_SEVENTH_HEALTHY);
+                            nutritionQuestionnaire.setDescription(
+                                    String.format(TextNormal.DESCRIPTION_SEVENTH_HEALTHY,
+                                            nutritionQuestionnaire.getTextMassBodyIndex(), oneVolume)
+                            );
+                            nutritionQuestionnaire.setMenu(
+                                    String.format(TextNormal.MENU_SEVENTH_HEALTHY,
+                                            oneVolume, oneVolume-140, oneVolume-140, oneVolume-90, oneVolume)
+                            );
                             break;
                         case 8:
-                            nutritionQuestionnaire.setMenu(TextNormal.MENU_EIGHTH_HEALTHY);
-                            nutritionQuestionnaire.setDescription(TextNormal.DESCRIPTION_EIGHTH_HEALTHY);
+                            nutritionQuestionnaire.setDescription(
+                                    String.format(TextNormal.DESCRIPTION_EIGHTH_HEALTHY,
+                                    nutritionQuestionnaire.getTextMassBodyIndex(), oneVolume)
+                            );
+                            nutritionQuestionnaire.setMenu(
+                                    String.format(TextNormal.MENU_EIGHTH_HEALTHY,
+                                            oneVolume, oneVolume-90, oneVolume-140, oneVolume-140, oneVolume,
+                                            oneVolume, oneVolume-140, oneVolume-140, oneVolume-90,
+                                            oneVolume, oneVolume-135, oneVolume-136, oneVolume-90,
+                                            oneVolume, oneVolume-140, oneVolume-146, oneVolume-95)
+                            );
                             break;
                         case 9, 10, 11, 12:
-                            nutritionQuestionnaire.setMenu(TextNormal.MENU_NINTH_TO_TWELFTH_HEALTHY);
-                            nutritionQuestionnaire.setDescription(TextNormal.DESCRIPTION_NINTH_TO_TWELFTH_HEALTHY);
+                            nutritionQuestionnaire.setDescription(
+                                    String.format(TextNormal.DESCRIPTION_NINTH_TO_TWELFTH_HEALTHY,
+                                            nutritionQuestionnaire.getTextMassBodyIndex(), oneVolume)
+                            );
+                            nutritionQuestionnaire.setMenu(
+                                    String.format(TextNormal.MENU_NINTH_TO_TWELFTH_HEALTHY,
+                                            oneVolume)
+                            );
                             break;
                         default:
-                            nutritionQuestionnaire.setMenu(null);
                             nutritionQuestionnaire.setDescription(null);
+                            nutritionQuestionnaire.setMenu(null);
                             break;
-                    };
+                    }
                 } else if (illness == Illness.CONSTIPATION) {
                     switch (babyAge) {
                         case 1, 2, 3, 4:
-                            nutritionQuestionnaire.setMenu(TextNormalConstipation.MENU_FOURTH);
-                            nutritionQuestionnaire.setDescription(TextNormalConstipation.DESCRIPTION_FOURTH);
+                            nutritionQuestionnaire.setDescription(
+                                    String.format(TextNormalConstipation.DESCRIPTION_FOURTH,
+                                            nutritionQuestionnaire.getTextMassBodyIndex(), oneVolume)
+                            );
+                            nutritionQuestionnaire.setMenu(
+                                    String.format(TextNormalConstipation.MENU_FOURTH,
+                                            oneVolume, oneVolume-10, oneVolume/3, oneVolume, oneVolume/3,
+                                            oneVolume, oneVolume, oneVolume/3, oneVolume,
+                                            oneVolume, oneVolume-75, oneVolume, oneVolume, oneVolume, oneVolume)
+                            );
                             break;
                         case 5:
-                            nutritionQuestionnaire.setMenu(TextNormalConstipation.MENU_FIFTH);
-                            nutritionQuestionnaire.setDescription(TextNormalConstipation.DESCRIPTION_FIFTH);
+                            nutritionQuestionnaire.setDescription(
+                                    String.format(TextNormalConstipation.DESCRIPTION_FIFTH,
+                                            nutritionQuestionnaire.getTextMassBodyIndex(), oneVolume)
+                            );
+                            nutritionQuestionnaire.setMenu(
+                                    String.format(TextNormalConstipation.MENU_FIFTH,
+                                            oneVolume, oneVolume-11, oneVolume-76, oneVolume, oneVolume-76, oneVolume,
+                                            oneVolume, oneVolume- 81, oneVolume-76, oneVolume-76, oneVolume-76, oneVolume,
+                                            oneVolume, oneVolume- 100, oneVolume-76, oneVolume-100, oneVolume-76, oneVolume)
+                            );
                             break;
                         case 6:
-                            nutritionQuestionnaire.setMenu(TextNormalConstipation.MENU_SIXTH);
-                            nutritionQuestionnaire.setDescription(TextNormalConstipation.DESCRIPTION_SIXTH);
+                            nutritionQuestionnaire.setDescription(
+                                    String.format(TextNormalConstipation.DESCRIPTION_SIXTH,
+                                            nutritionQuestionnaire.getTextMassBodyIndex(), oneVolume)
+                            );
+                            nutritionQuestionnaire.setMenu(
+                                    String.format(TextNormalConstipation.MENU_SIXTH,
+                                            oneVolume, oneVolume-102, oneVolume-122, oneVolume-92, oneVolume,
+                                            oneVolume, oneVolume-124, oneVolume-125, oneVolume-112, oneVolume)
+                            );
                             break;
                         case 7:
-                            nutritionQuestionnaire.setMenu(TextNormalConstipation.MENU_SEVENTH);
-                            nutritionQuestionnaire.setDescription(TextNormalConstipation.DESCRIPTION_SEVENTH);
+                            nutritionQuestionnaire.setDescription(
+                                    String.format(TextNormalConstipation.DESCRIPTION_SEVENTH,
+                                            nutritionQuestionnaire.getTextMassBodyIndex(), oneVolume)
+                            );
+                            nutritionQuestionnaire.setMenu(
+                                    String.format(TextNormalConstipation.MENU_SEVENTH,
+                                            oneVolume, oneVolume-140, oneVolume-123, oneVolume-82, oneVolume)
+                            );
                             break;
                         case 8:
-                            nutritionQuestionnaire.setMenu(TextNormalConstipation.MENU_EIGHTH);
-                            nutritionQuestionnaire.setDescription(TextNormalConstipation.DESCRIPTION_EIGHTH);
+                            nutritionQuestionnaire.setDescription(
+                                    String.format(TextNormalConstipation.DESCRIPTION_EIGHTH,
+                                            nutritionQuestionnaire.getTextMassBodyIndex(), oneVolume)
+                            );
+                            nutritionQuestionnaire.setMenu(
+                                    String.format(TextNormalConstipation.MENU_EIGHTH,
+                                            oneVolume, oneVolume-90, oneVolume-140, oneVolume-140, oneVolume,
+                                            oneVolume-70, oneVolume-90, oneVolume-70,
+                                            oneVolume, oneVolume-135, oneVolume-90, oneVolume-140,
+                                            oneVolume, oneVolume-140, oneVolume-95, oneVolume-100)
+                            );
                             break;
                         case 9, 10, 11, 12:
-                            nutritionQuestionnaire.setMenu(TextNormalConstipation.MENU_NINTH_TO_TWELFTH);
-                            nutritionQuestionnaire.setDescription(TextNormalConstipation.DESCRIPTION_NINTH_TO_TWELFTH);
+                            nutritionQuestionnaire.setDescription(
+                                    String.format(TextNormalConstipation.DESCRIPTION_NINTH_TO_TWELFTH,
+                                            nutritionQuestionnaire.getTextMassBodyIndex(), oneVolume)
+                            );
+                            nutritionQuestionnaire.setMenu(
+                                    String.format(TextNormalConstipation.MENU_NINTH_TO_TWELFTH,
+                                            oneVolume, oneVolume-140, oneVolume-100)
+                            );
                             break;
                         default:
-                            nutritionQuestionnaire.setMenu(null);
                             nutritionQuestionnaire.setDescription(null);
+                            nutritionQuestionnaire.setMenu(null);
                             break;
                     };
                 } else if (illness == Illness.REGURGITATION) {
                     switch (babyAge) {
                         case 1, 2, 3, 4:
-                            nutritionQuestionnaire.setMenu(TextNormalRegurgitation.MENU_FOURTH);
-                            nutritionQuestionnaire.setDescription(TextNormalRegurgitation.DESCRIPTION_FOURTH);
+                            nutritionQuestionnaire.setDescription(
+                                    String.format(TextNormalRegurgitation.DESCRIPTION_FOURTH,
+                                            nutritionQuestionnaire.getTextMassBodyIndex(), oneVolume)
+                            );
+                            nutritionQuestionnaire.setMenu(
+                                    String.format(TextNormalRegurgitation.MENU_FOURTH,
+                                            oneVolume, oneVolume - 7, oneVolume - 7, oneVolume - 7, oneVolume)
+                            );
                             break;
                         case 5:
-                            nutritionQuestionnaire.setMenu(TextNormalRegurgitation.MENU_FIFTH);
-                            nutritionQuestionnaire.setDescription(TextNormalRegurgitation.DESCRIPTION_FIFTH);
+                            nutritionQuestionnaire.setDescription(
+                                    String.format(TextNormalRegurgitation.DESCRIPTION_FIFTH,
+                                            nutritionQuestionnaire.getTextMassBodyIndex(), oneVolume)
+                            );
+                            nutritionQuestionnaire.setMenu(
+                                    String.format(TextNormalRegurgitation.MENU_FIFTH,
+                                            oneVolume-5, oneVolume-11, oneVolume-7, oneVolume, oneVolume-7, oneVolume,
+                                            oneVolume, oneVolume-13, oneVolume-77, oneVolume-66, oneVolume-10, oneVolume,
+                                            oneVolume-7, oneVolume-82, oneVolume-76, oneVolume-71, oneVolume-76, oneVolume,
+                                            oneVolume-10, oneVolume-97, oneVolume-76, oneVolume-97, oneVolume-76, oneVolume)
+                            );
                             break;
                         case 6:
-                            nutritionQuestionnaire.setMenu(TextNormal.MENU_SIXTH_HEALTHY);
-                            nutritionQuestionnaire.setDescription(TextNormal.DESCRIPTION_SIXTH_HEALTHY);
+                            nutritionQuestionnaire.setDescription(
+                                    String.format(TextNormalRegurgitation.DESCRIPTION_SIXTH,
+                                            nutritionQuestionnaire.getTextMassBodyIndex(), oneVolume)
+                            );
+                            nutritionQuestionnaire.setMenu(
+                                    String.format(TextNormalRegurgitation.MENU_SIXTH,
+                                            oneVolume-5, oneVolume-102, oneVolume-112, oneVolume-80, oneVolume,
+                                            oneVolume-5, oneVolume-119, oneVolume-135, oneVolume-100, oneVolume)
+                            );
                             break;
                         case 7:
-                            nutritionQuestionnaire.setMenu(TextNormal.MENU_SEVENTH_HEALTHY);
-                            nutritionQuestionnaire.setDescription(TextNormal.DESCRIPTION_SEVENTH_HEALTHY);
+                            nutritionQuestionnaire.setDescription(
+                                    String.format(TextNormalRegurgitation.DESCRIPTION_SEVENTH,
+                                            nutritionQuestionnaire.getTextMassBodyIndex(), oneVolume)
+                            );
+                            nutritionQuestionnaire.setMenu(
+                                    String.format(TextNormalRegurgitation.MENU_SEVENTH,
+                                            oneVolume-5, oneVolume-140, oneVolume-140, oneVolume-95, oneVolume)
+                            );
                             break;
                         case 8:
-                            nutritionQuestionnaire.setMenu(TextNormal.MENU_EIGHTH_HEALTHY);
-                            nutritionQuestionnaire.setDescription(TextNormal.DESCRIPTION_EIGHTH_HEALTHY);
+                            nutritionQuestionnaire.setDescription(
+                                    String.format(TextNormalRegurgitation.DESCRIPTION_EIGHTH,
+                                            nutritionQuestionnaire.getTextMassBodyIndex(), oneVolume)
+                            );
+                            nutritionQuestionnaire.setMenu(
+                                    String.format(TextNormalRegurgitation.MENU_EIGHTH,
+                                            oneVolume-5, oneVolume-90, oneVolume-130, oneVolume-140, oneVolume,
+                                            oneVolume-5, oneVolume-140, oneVolume-135, oneVolume-90,
+                                            oneVolume-5, oneVolume-130, oneVolume-136, oneVolume-90,
+                                            oneVolume-5, oneVolume-135, oneVolume-146, oneVolume-90)
+                            );
                             break;
                         case 9, 10, 11, 12:
-                            nutritionQuestionnaire.setMenu(TextNormal.MENU_NINTH_TO_TWELFTH_HEALTHY);
-                            nutritionQuestionnaire.setDescription(TextNormal.DESCRIPTION_NINTH_TO_TWELFTH_HEALTHY);
+                            nutritionQuestionnaire.setDescription(
+                                    String.format(TextNormalRegurgitation.DESCRIPTION_NINTH_TO_TWELFTH,
+                                            nutritionQuestionnaire.getTextMassBodyIndex(), oneVolume)
+                            );
+                            nutritionQuestionnaire.setMenu(
+                                    String.format(TextNormalRegurgitation.MENU_NINTH_TO_TWELFTH,
+                                            oneVolume-7, oneVolume-140, oneVolume-146, oneVolume-100)
+                            );
                             break;
                         default:
-                            nutritionQuestionnaire.setMenu(null);
                             nutritionQuestionnaire.setDescription(null);
+                            nutritionQuestionnaire.setMenu(null);
                             break;
                     };
                 }
                 break;
             case CodeBodyMassIndex.CODE_VERY_THIN:
-                switch (babyAge) {
-                    case 1, 2, 3, 4:
-                        nutritionQuestionnaire.setMenu(TextThin.MENU_FOURTH_THIN);
-                        nutritionQuestionnaire.setDescription(TextThin.DESCRIPTION_FOURTH_THIN);
-                        break;
-                    case 5:
-                        nutritionQuestionnaire.setMenu(TextThin.MENU_FIFTH_THIN);
-                        nutritionQuestionnaire.setDescription(TextThin.DESCRIPTION_FIFTH_THIN);
-                        break;
-                    case 6:
-                        nutritionQuestionnaire.setMenu(TextThin.MENU_SIXTH_THIN);
-                        nutritionQuestionnaire.setDescription(TextThin.DESCRIPTION_SIXTH_THIN);
-                        break;
-                    case 7:
-                        nutritionQuestionnaire.setMenu(TextThin.MENU_SEVENTH_THIN);
-                        nutritionQuestionnaire.setDescription(TextThin.DESCRIPTION_SEVENTH_THIN);
-                        break;
-                    case 8:
-                        nutritionQuestionnaire.setMenu(TextThin.MENU_EIGHTH_THIN);
-                        nutritionQuestionnaire.setDescription(TextThin.DESCRIPTION_EIGHTH_THIN);
-                        break;
-                    case 9, 10, 11, 12:
-                        nutritionQuestionnaire.setMenu(TextThin.MENU_NINTH_TO_TWELFTH_THIN);
-                        nutritionQuestionnaire.setDescription(TextThin.DESCRIPTION_NINTH_TO_TWELFTH_THIN);
-                        break;
-                    default:
-                        nutritionQuestionnaire.setMenu(null);
-                        nutritionQuestionnaire.setDescription(null);
-                        break;
-                };
-                break;
             case CodeBodyMassIndex.CODE_THIN:
                 switch (babyAge) {
                     case 1, 2, 3, 4:
-                        nutritionQuestionnaire.setMenu(TextThin.MENU_FOURTH_THIN);
-                        nutritionQuestionnaire.setDescription(TextThin.DESCRIPTION_FOURTH_THIN);
+                        nutritionQuestionnaire.setDescription(
+                                String.format(TextThin.DESCRIPTION_FOURTH_THIN,
+                                        nutritionQuestionnaire.getTextMassBodyIndex(), oneVolume)
+
+                        );
+                        nutritionQuestionnaire.setMenu(
+                                String.format(TextThin.MENU_FOURTH_THIN,
+                                        oneVolume, oneVolume-10, oneVolume, oneVolume, oneVolume, oneVolume,
+                                        oneVolume, oneVolume-75, oneVolume, oneVolume, oneVolume, oneVolume)
+                        );
                         break;
                     case 5:
-                        nutritionQuestionnaire.setMenu(TextThin.MENU_FIFTH_THIN);
-                        nutritionQuestionnaire.setDescription(TextThin.DESCRIPTION_FIFTH_THIN);
+                        nutritionQuestionnaire.setDescription(
+                                String.format(TextThin.DESCRIPTION_FIFTH_THIN,
+                                        nutritionQuestionnaire.getTextMassBodyIndex(), oneVolume)
+
+                        );
+                        nutritionQuestionnaire.setMenu(
+                                String.format(TextThin.MENU_FIFTH_THIN,
+                                        oneVolume, oneVolume-76, oneVolume, oneVolume-76, oneVolume, oneVolume,
+                                        oneVolume, oneVolume-5, oneVolume-76, oneVolume, oneVolume-76, oneVolume,
+                                        oneVolume, oneVolume-41, oneVolume-76, oneVolume-76, oneVolume, oneVolume)
+                        );
                         break;
                     case 6:
-                        nutritionQuestionnaire.setMenu(TextThin.MENU_SIXTH_THIN);
-                        nutritionQuestionnaire.setDescription(TextThin.DESCRIPTION_SIXTH_THIN);
+                        nutritionQuestionnaire.setDescription(
+                                String.format(TextThin.DESCRIPTION_SIXTH_THIN,
+                                        nutritionQuestionnaire.getTextMassBodyIndex(), oneVolume)
+                        );
+                        nutritionQuestionnaire.setMenu(
+                                String.format(TextThin.MENU_SIXTH_THIN,
+                                        oneVolume, oneVolume-81, oneVolume-81, oneVolume-76, oneVolume, oneVolume,
+                                        oneVolume, oneVolume-30, oneVolume-76, oneVolume-81, oneVolume-96, oneVolume,
+                                        oneVolume, oneVolume-97, oneVolume-84, oneVolume-78, oneVolume-70, oneVolume)
+                        );
                         break;
                     case 7:
-                        nutritionQuestionnaire.setMenu(TextThin.MENU_SEVENTH_THIN);
-                        nutritionQuestionnaire.setDescription(TextThin.DESCRIPTION_SEVENTH_THIN);
+                        nutritionQuestionnaire.setDescription(
+                                String.format(TextThin.DESCRIPTION_SEVENTH_THIN,
+                                        nutritionQuestionnaire.getTextMassBodyIndex(), oneVolume)
+                        );
+                        nutritionQuestionnaire.setMenu(
+                                String.format(TextThin.MENU_SEVENTH_THIN,
+                                        oneVolume, oneVolume-102, oneVolume-84, oneVolume-78, oneVolume-70, oneVolume)
+                        );
                         break;
                     case 8:
-                        nutritionQuestionnaire.setMenu(TextThin.MENU_EIGHTH_THIN);
-                        nutritionQuestionnaire.setDescription(TextThin.DESCRIPTION_EIGHTH_THIN);
+                        nutritionQuestionnaire.setDescription(
+                                String.format(TextThin.DESCRIPTION_EIGHTH_THIN,
+                                        nutritionQuestionnaire.getTextMassBodyIndex(), oneVolume)
+                        );
+                        nutritionQuestionnaire.setMenu(
+                                String.format(TextThin.MENU_EIGHTH_THIN,
+                                        oneVolume, oneVolume-102, oneVolume-84, oneVolume-78, oneVolume-70,
+                                        oneVolume, oneVolume-140, oneVolume-140, oneVolume-90,
+                                        oneVolume, oneVolume-140, oneVolume-136, oneVolume-90)
+                        );
                         break;
                     case 9, 10, 11, 12:
-                        nutritionQuestionnaire.setMenu(TextThin.MENU_NINTH_TO_TWELFTH_THIN);
-                        nutritionQuestionnaire.setDescription(TextThin.DESCRIPTION_NINTH_TO_TWELFTH_THIN);
+                        nutritionQuestionnaire.setDescription(
+                                String.format(TextThin.DESCRIPTION_NINTH_TO_TWELFTH_THIN,
+                                        nutritionQuestionnaire.getTextMassBodyIndex(), oneVolume)
+                        );
+                        nutritionQuestionnaire.setMenu(
+                                String.format(TextThin.MENU_NINTH_TO_TWELFTH_THIN,
+                                        oneVolume, oneVolume-140, oneVolume-100)
+                        );
                         break;
                     default:
-                        nutritionQuestionnaire.setMenu(null);
                         nutritionQuestionnaire.setDescription(null);
+                        nutritionQuestionnaire.setMenu(null);
                         break;
-                };
+                }
                 break;
             case CodeBodyMassIndex.CODE_THICK:
                 switch (babyAge) {
                     case 1, 2, 3, 4:
-                        nutritionQuestionnaire.setMenu(TextThick.MENU_FOURTH_THICK);
-                        nutritionQuestionnaire.setDescription(TextThick.DESCRIPTION_FOURTH_THICK);
+                        nutritionQuestionnaire.setDescription(
+                                String.format(TextThick.DESCRIPTION_FOURTH_THICK,
+                                        nutritionQuestionnaire.getTextMassBodyIndex(), oneVolume)
+                        );
+                        nutritionQuestionnaire.setMenu(
+                                String.format(TextThick.MENU_FOURTH_THICK,
+                                        oneVolume, oneVolume-5, oneVolume, oneVolume, oneVolume-5 , oneVolume,
+                                        oneVolume, oneVolume-75, oneVolume, oneVolume, oneVolume-75, oneVolume)
+                        );
                         break;
                     case 5:
-                        nutritionQuestionnaire.setMenu(TextThick.MENU_FIFTH_THICK);
-                        nutritionQuestionnaire.setDescription(TextThick.DESCRIPTION_FIFTH_THICK);
+                        nutritionQuestionnaire.setDescription(
+                                String.format(TextThick.DESCRIPTION_FIFTH_THICK,
+                                        nutritionQuestionnaire.getTextMassBodyIndex(), oneVolume)
+                        );
+                        nutritionQuestionnaire.setMenu(
+                                String.format(TextThick.MENU_FIFTH_THICK,
+                                        oneVolume, oneVolume-5, oneVolume-76, oneVolume-5, oneVolume-75, oneVolume,
+                                        oneVolume, oneVolume-50, oneVolume-78, oneVolume-20, oneVolume-75, oneVolume,
+                                        oneVolume, oneVolume-110, oneVolume-77, oneVolume-20, oneVolume-75, oneVolume)
+                        );
                         break;
                     case 6:
-                        nutritionQuestionnaire.setMenu(TextThick.MENU_SIXTH_THICK);
-                        nutritionQuestionnaire.setDescription(TextThick.DESCRIPTION_SIXTH_THICK);
+                        nutritionQuestionnaire.setDescription(
+                                String.format(TextThick.DESCRIPTION_SIXTH_THICK,
+                                nutritionQuestionnaire.getTextMassBodyIndex(), oneVolume)
+                    );
+                        nutritionQuestionnaire.setMenu(
+                                String.format(TextThick.MENU_SIXTH_THICK,
+                                        oneVolume, oneVolume-108, oneVolume-130, oneVolume-50, oneVolume,
+                                        oneVolume, oneVolume-130, oneVolume-103, oneVolume-80, oneVolume)
+                        );
                         break;
                     case 7:
-                        nutritionQuestionnaire.setMenu(TextThick.MENU_SEVENTH_THICK);
-                        nutritionQuestionnaire.setDescription(TextThick.DESCRIPTION_SEVENTH_THICK);
+                        nutritionQuestionnaire.setDescription(
+                                String.format(TextThick.DESCRIPTION_SEVENTH_THICK,
+                                nutritionQuestionnaire.getTextMassBodyIndex(), oneVolume)
+                    );
+                        nutritionQuestionnaire.setMenu(
+                                String.format(TextThick.MENU_SEVENTH_THICK,
+                                        oneVolume, oneVolume-140, oneVolume-123, oneVolume-80, oneVolume)
+                        );
                         break;
                     case 8:
-                        nutritionQuestionnaire.setMenu(TextThick.MENU_EIGHTH_THICK);
-                        nutritionQuestionnaire.setDescription(TextThick.DESCRIPTION_EIGHTH_THICK);
+                        nutritionQuestionnaire.setDescription(
+                                String.format(TextThick.DESCRIPTION_EIGHTH_THICK,
+                                nutritionQuestionnaire.getTextMassBodyIndex(), oneVolume)
+                    );
+                        nutritionQuestionnaire.setMenu(
+                                String.format(TextThick.MENU_EIGHTH_THICK,
+                                        oneVolume, oneVolume-90, oneVolume-137, oneVolume-140, oneVolume,
+                                        oneVolume, oneVolume-140, oneVolume-140, oneVolume-90,
+                                        oneVolume, oneVolume-140, oneVolume-136, oneVolume-90,
+                                        oneVolume, oneVolume-140, oneVolume-140, oneVolume-90 )
+                        );
                         break;
                     case 9, 10, 11, 12:
-                        nutritionQuestionnaire.setMenu(TextThick.MENU_NINTH_TO_TWELFTH_THICK);
-                        nutritionQuestionnaire.setDescription(TextThick.DESCRIPTION_NINTH_TO_TWELFTH_THICK);
+                        nutritionQuestionnaire.setDescription(
+                                String.format(TextThick.DESCRIPTION_NINTH_TO_TWELFTH_THICK,
+                                nutritionQuestionnaire.getTextMassBodyIndex(), oneVolume)
+                    );
+                        nutritionQuestionnaire.setMenu(
+                                String.format(TextThick.MENU_NINTH_TO_TWELFTH_THICK,
+                                        oneVolume, oneVolume-140, oneVolume-140, oneVolume-110)
+                        );
                         break;
                     default:
-                        nutritionQuestionnaire.setMenu(null);
                         nutritionQuestionnaire.setDescription(null);
+                        nutritionQuestionnaire.setMenu(null);
                         break;
                 };
                 break;
             case CodeBodyMassIndex.CODE_VERY_THICK:
                 switch (babyAge) {
                     case 1, 2, 3, 4:
-                        nutritionQuestionnaire.setMenu(TextVeryThick.MENU_FOURTH_VERY_THICK);
-                        nutritionQuestionnaire.setDescription(TextVeryThick.DESCRIPTION_FOURTH_VERY_THICK);
+                        nutritionQuestionnaire.setDescription(
+                                String.format(TextVeryThick.DESCRIPTION_FOURTH_VERY_THICK,
+                                nutritionQuestionnaire.getTextMassBodyIndex(), oneVolume)
+                    );
+                        nutritionQuestionnaire.setMenu(
+                                String.format(TextVeryThick.MENU_FOURTH_VERY_THICK,
+                                        oneVolume-5, oneVolume, oneVolume, oneVolume, oneVolume-5, oneVolume,
+                                        oneVolume, oneVolume-75, oneVolume, oneVolume, oneVolume-75, oneVolume)
+                        );
                         break;
                     case 5:
-                        nutritionQuestionnaire.setMenu(TextVeryThick.MENU_FIFTH_VERY_THICK);
-                        nutritionQuestionnaire.setDescription(TextVeryThick.DESCRIPTION_FIFTH_VERY_THICK);
+                        nutritionQuestionnaire.setDescription(
+                                String.format(TextVeryThick.DESCRIPTION_FIFTH_VERY_THICK,
+                                nutritionQuestionnaire.getTextMassBodyIndex(), oneVolume)
+                    );
+                        nutritionQuestionnaire.setMenu(
+                                String.format(TextVeryThick.MENU_FIFTH_VERY_THICK,
+                                        oneVolume, oneVolume-5, oneVolume-76, oneVolume-5, oneVolume-75, oneVolume,
+                                        oneVolume, oneVolume-25, oneVolume-76, oneVolume-5, oneVolume-75, oneVolume)
+                        );
                         break;
                     case 6:
-                        nutritionQuestionnaire.setMenu(TextVeryThick.MENU_SIXTH_VERY_THICK);
-                        nutritionQuestionnaire.setDescription(TextVeryThick.DESCRIPTION_SIXTH_VERY_THICK);
+                        nutritionQuestionnaire.setDescription(
+                                String.format(TextVeryThick.DESCRIPTION_SIXTH_VERY_THICK,
+                                nutritionQuestionnaire.getTextMassBodyIndex(), oneVolume)
+                    );
+                        nutritionQuestionnaire.setMenu(
+                                String.format(TextVeryThick.MENU_SIXTH_VERY_THICK,
+                                        oneVolume, oneVolume-108, oneVolume-60, oneVolume-50, oneVolume,
+                                        oneVolume, oneVolume-70, oneVolume-103, oneVolume-80, oneVolume,
+                                        oneVolume, oneVolume-130, oneVolume-103, oneVolume-80, oneVolume)
+                        );
                         break;
                     case 7:
-                        nutritionQuestionnaire.setMenu(TextVeryThick.MENU_SEVENTH_VERY_THICK);
-                        nutritionQuestionnaire.setDescription(TextVeryThick.DESCRIPTION_SEVENTH_VERY_THICK);
+                        nutritionQuestionnaire.setDescription(
+                                String.format(TextVeryThick.DESCRIPTION_SEVENTH_VERY_THICK,
+                                nutritionQuestionnaire.getTextMassBodyIndex(), oneVolume)
+                    );
+                        nutritionQuestionnaire.setMenu(
+                                String.format(TextVeryThick.MENU_SEVENTH_VERY_THICK,
+                                        oneVolume, oneVolume-140, oneVolume-123, oneVolume-80, oneVolume)
+                        );
                         break;
                     case 8:
-                        nutritionQuestionnaire.setMenu(TextVeryThick.MENU_EIGHTH_VERY_THICK);
-                        nutritionQuestionnaire.setDescription(TextVeryThick.DESCRIPTION_EIGHTH_VERY_THICK);
+                        nutritionQuestionnaire.setDescription(
+                                String.format(TextVeryThick.DESCRIPTION_EIGHTH_VERY_THICK,
+                                nutritionQuestionnaire.getTextMassBodyIndex(), oneVolume)
+                    );
+                        nutritionQuestionnaire.setMenu(
+                                String.format(TextVeryThick.MENU_EIGHTH_VERY_THICK,
+                                        oneVolume, oneVolume-90, oneVolume-137, oneVolume-140, oneVolume,
+                                        oneVolume, oneVolume-140, oneVolume-140, oneVolume-90,
+                                        oneVolume, oneVolume-140, oneVolume-136, oneVolume-90,
+                                        oneVolume, oneVolume-140, oneVolume-140, oneVolume-90)
+                        );
                         break;
                     case 9, 10, 11, 12:
-                        nutritionQuestionnaire.setMenu(TextVeryThick.MENU_NINTH_TO_TWELFTH_VERY_THICK);
-                        nutritionQuestionnaire.setDescription(TextVeryThick.DESCRIPTION_NINTH_TO_TWELFTH_VERY_THICK);
+                        nutritionQuestionnaire.setDescription(
+                                String.format(TextVeryThick.DESCRIPTION_NINTH_TO_TWELFTH_VERY_THICK,
+                                nutritionQuestionnaire.getTextMassBodyIndex(), oneVolume)
+                    );
+                        nutritionQuestionnaire.setMenu(
+                                String.format(TextVeryThick.MENU_NINTH_TO_TWELFTH_VERY_THICK,
+                                        oneVolume, oneVolume-140, oneVolume-140, oneVolume-110)
+                        );
                         break;
                     default:
-                        nutritionQuestionnaire.setMenu(null);
                         nutritionQuestionnaire.setDescription(null);
+                        nutritionQuestionnaire.setMenu(null);
                         break;
                 };
                 break;

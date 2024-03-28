@@ -14,7 +14,7 @@ public class NutritionQuestionnaire {
     private int illness;//Заболевание
     private Double dmt;//Долженствующая масса тела
     private Double dayVolume;//Суточный объём
-    private String oneVolume;//Разовый объём
+    private Double oneVolume;//Разовый объём
     private String menu;//Меню
     private String description;//Описание
     private String textMassBodyIndex;//Текст индекса массы тела
