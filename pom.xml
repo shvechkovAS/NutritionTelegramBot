@@ -15,6 +15,9 @@
 	<name>NutritionTelegramBot</name>
 	<properties>
 		<java.version>17</java.version>
+		<log4j.version>1.2.17</log4j.version>
+		<lombok.version>1.18.22</lombok.version>
+		<telegram.version>6.5.0</telegram.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -26,26 +29,28 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-devtools</artifactId>
-			<scope>runtime</scope>
-			<optional>true</optional>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>${log4j.version}</version>
 		</dependency>
+
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
-			<optional>true</optional>
+			<version>${lombok.version}</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.telegram</groupId>
 			<artifactId>telegrambots</artifactId>
-			<version>6.5.0</version>
+			<version>${telegram.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.telegram</groupId>
 			<artifactId>telegrambots-meta</artifactId>
-			<version>6.5.0</version>
+			<version>${telegram.version}</version>
 		</dependency>
 	</dependencies>
 

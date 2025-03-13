@@ -17,7 +17,7 @@ public class ButtonsService {
         buttonMenu.setCallbackData("menu");
         InlineKeyboardButton buttonProfit = new InlineKeyboardButton("Узнать о пользе продуктов");
         buttonProfit.setCallbackData("profit");
-        InlineKeyboardButton buttonCalendar = new InlineKeyboardButton("Календарь и правила ведения прикормов");
+        InlineKeyboardButton buttonCalendar = new InlineKeyboardButton("Календарь и правила введения прикормов");
         buttonCalendar.setCallbackData("calendar");
 
         List<InlineKeyboardButton> keyboardButtonsFirstRowList = new ArrayList<>();

@@ -8,8 +8,10 @@ import com.telegramBot.nutricion.model.NutritionQuestionnaire;
 import com.telegramBot.nutricion.service.ButtonsService;
 import com.telegramBot.nutricion.service.NutritionQuestionnaireService;
 import com.telegramBot.nutricion.service.ReplyMessagesService;
+import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.telegram.telegrambots.meta.api.methods.ParseMode;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -20,6 +22,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Component
+@Log4j
 public class FillingQuestionnaireHandler implements InputMessageHandler {
 
     @Autowired
@@ -38,15 +41,20 @@ public class FillingQuestionnaireHandler implements InputMessageHandler {
     public Object handle(Update update) {
         if (update.hasCallbackQuery()){
             CallbackQuery callbackQuery = update.getCallbackQuery();
-            if(botCache.getUsersCurrentBotState(callbackQuery.getFrom().getId())
+            long userId = callbackQuery.getFrom().getId();
+            if(botCache.getUsersCurrentBotState(userId)
                     .equals(BotState.FILLING_QUESTIONNAIRE)){
-                botCache.setUsersCurrentBotState(callbackQuery.getFrom().getId(), BotState.ASK_BABY_AGE);
+                botCache.clearNutritionQuestionnaireData(userId);
+                botCache.saveUsersCurrentBotState(userId, BotState.ASK_BABY_AGE);
+
             }
         } else if (update.hasMessage()){
             Message message = update.getMessage();
-            if(botCache.getUsersCurrentBotState(message.getFrom().getId())
+            long userId = message.getFrom().getId();
+            if(botCache.getUsersCurrentBotState(userId)
                     .equals(BotState.FILLING_QUESTIONNAIRE)){
-                botCache.setUsersCurrentBotState(message.getFrom().getId(), BotState.ASK_BABY_AGE);
+                botCache.clearNutritionQuestionnaireData(userId);
+                botCache.saveUsersCurrentBotState(userId, BotState.ASK_BABY_AGE);
             }
         }
 
@@ -80,56 +88,66 @@ public class FillingQuestionnaireHandler implements InputMessageHandler {
 
         SendMessage replyToUser;
 
+        //если пользователь нажал "Показать пример меню", устанавливается статус "ASK_BABY_AGE"
         if (botState.equals(BotState.ASK_BABY_AGE)) {
             replyToUser = messagesService.getReplyMessage(chatId, "reply.askBabyAge");
             replyToUser.setReplyMarkup(buttonsService.setMenuButtons());
-            botCache.setUsersCurrentBotState(userId, BotState.ASK_BIRTH_BABY_WEIGHT);
+            replyToUser.setParseMode(ParseMode.MARKDOWN);
+            botCache.saveUsersCurrentBotState(userId, BotState.ASK_BIRTH_BABY_WEIGHT);
             messages.add(replyToUser);
         }
 
+        //если пользователь выбрал возраст в месяцах, устанавливается статус "ASK_BIRTH_BABY_WEIGHT"
         if (botState.equals(BotState.ASK_BIRTH_BABY_WEIGHT)) {
             if (update.hasCallbackQuery()){
                 usersAnswer = update.getCallbackQuery().getData();
             } else {
-                botCache.setUsersCurrentBotState(userId, BotState.ASK_BABY_AGE);
-                messages.add(new SendMessage(chatId, "Выберите возраст с помощью предлагаемых кнопок."));
+                botCache.saveUsersCurrentBotState(userId, BotState.ASK_BABY_AGE);
+                messages.add(new SendMessage(chatId, "Выберите возраст с помощью предлагаемых кнопок"));
                 return messages;
             }
             questionnaireData.setBabyAge(usersAnswer);
+            botCache.saveUsersCurrentBotState(userId, BotState.ASK_BABY_HEIGHT);
             replyToUser = messagesService.getReplyMessage(chatId, "reply.askBirthBabyWeight");
+            replyToUser.setParseMode(ParseMode.MARKDOWN);
             messages.add(replyToUser);
-            botCache.setUsersCurrentBotState(userId, BotState.ASK_BABY_HEIGHT);
         }
 
         if (botState.equals(BotState.ASK_BABY_HEIGHT)) {
-            questionnaireData.setBirthBabyWeight(usersAnswer.replaceAll("[^0-9]", ""));
+            String birthBabyWeight = usersAnswer.replaceAll(",", ".").replaceAll("[^0-9.]", "");
+            //Вес при рождении проверить на количество знаков перед запятой, если 3 и больше - выдавать текст "Укажите в килограммах" и оставлять тот же статус
+            questionnaireData.setBirthBabyWeight(birthBabyWeight);
+            botCache.saveUsersCurrentBotState(userId, BotState.ASK_BABY_WEIGHT);
             replyToUser = messagesService.getReplyMessage(chatId, "reply.askBabyHeight");
+            replyToUser.setParseMode(ParseMode.MARKDOWN);
             messages.add(replyToUser);
-            botCache.setUsersCurrentBotState(userId, BotState.ASK_BABY_WEIGHT);
         }
 
         if (botState.equals(BotState.ASK_BABY_WEIGHT)) {
             questionnaireData.setBabyHeight(usersAnswer.replaceAll(",", ".").replaceAll("[^0-9.]", ""));
             replyToUser = messagesService.getReplyMessage(chatId, "reply.askBabyWeight");
+            replyToUser.setParseMode(ParseMode.MARKDOWN);
             messages.add(replyToUser);
-            botCache.setUsersCurrentBotState(userId, BotState.ASK_BABY_SEX);
+            botCache.saveUsersCurrentBotState(userId, BotState.ASK_BABY_SEX);
         }
 
         if (botState.equals(BotState.ASK_BABY_SEX)) {
-            if(Objects.isNull(questionnaireData.getBabyWeight())) {
-                questionnaireData.setBabyWeight(usersAnswer.replaceAll(",", ".").replaceAll("[^0-9.]", ""));
-            }
+            String babyWeight = usersAnswer.replaceAll(",", ".").replaceAll("[^0-9.]", "");
+            //Вес при рождении проверить на количество знаков перед запятой, если 3 и больше - выдавать текст "Укажите в килограммах" и оставлять тот же статус
+            questionnaireData.setBabyWeight(babyWeight);
             replyToUser = messagesService.getReplyMessage(chatId, "reply.askBabySex");
             replyToUser.setReplyMarkup(buttonsService.setSexButtons());
+            replyToUser.setParseMode(ParseMode.MARKDOWN);
+
             messages.add(replyToUser);
-            botCache.setUsersCurrentBotState(userId, BotState.ASK_ILLNESS);
+            botCache.saveUsersCurrentBotState(userId, BotState.ASK_ILLNESS);
         }
 
         if (botState.equals(BotState.ASK_ILLNESS)) {
             if (update.hasCallbackQuery()){
                 usersAnswer = update.getCallbackQuery().getData();
             } else {
-                botCache.setUsersCurrentBotState(userId, BotState.ASK_BABY_SEX);
+                botCache.saveUsersCurrentBotState(userId, BotState.ASK_BABY_SEX);
                 messages.add(new SendMessage(chatId, "Выберите пол с помощью предлагаемых кнопок."));
                 return messages;
             }
@@ -138,46 +156,40 @@ public class FillingQuestionnaireHandler implements InputMessageHandler {
             } else if (usersAnswer.equals("female")) {
                 questionnaireData.setMale(false);
             }
-            nutritionQuestionnaireService.countValues(questionnaireData);
-            if(questionnaireData.getCodeMassBodyIndex()== CodeBodyMassIndex.CODE_NORMAL){
-                replyToUser = messagesService.getReplyMessage(chatId, "reply.askIllness");
-                replyToUser.setReplyMarkup(buttonsService.setIllnessButtons());
-                messages.add(replyToUser);
-                botCache.setUsersCurrentBotState(userId, BotState.QUESTIONNAIRE_FILLED);
-            } else {
-                replyToUser = messagesService.getReplyMessage(chatId, "reply.askCount");
-                replyToUser.setReplyMarkup(buttonsService.setCountButtons());
-                messages.add(replyToUser);
-                botCache.setUsersCurrentBotState(userId, BotState.QUESTIONNAIRE_FILLED);
-            }
+            nutritionQuestionnaireService.countValues(questionnaireData, update.getCallbackQuery().getFrom().getUserName());
+
+            replyToUser = messagesService.getReplyMessage(chatId, "reply.askIllness");
+            replyToUser.setReplyMarkup(buttonsService.setIllnessButtons());
+            replyToUser.setParseMode(ParseMode.MARKDOWN);
+
+            messages.add(replyToUser);
+            botCache.saveUsersCurrentBotState(userId, BotState.QUESTIONNAIRE_FILLED);
         }
 
         if (botState.equals(BotState.QUESTIONNAIRE_FILLED)) {
             if (update.hasCallbackQuery()){
                 usersAnswer = update.getCallbackQuery().getData();
             }  else {
-                botCache.setUsersCurrentBotState(userId, BotState.ASK_ILLNESS);
+                botCache.saveUsersCurrentBotState(userId, BotState.ASK_ILLNESS);
                 messages.add(new SendMessage(chatId, "Выберите болезни с помощью предлагаемых кнопок."));
                 return messages;
             }
-            if(questionnaireData.getCodeMassBodyIndex() == CodeBodyMassIndex.CODE_NORMAL) {
-                questionnaireData.setIllness(Integer.parseInt(usersAnswer));
-            } else {
-                questionnaireData.setIllness(0);
-            }
+            questionnaireData.setIllness(Integer.parseInt(usersAnswer));
             nutritionQuestionnaireService.menuText(questionnaireData);
-            botCache.setUsersCurrentBotState(userId, BotState.SHOW_START_MENU);
+            botCache.saveUsersCurrentBotState(userId, BotState.SHOW_START_MENU);
 
             replyToUser = new SendMessage(chatId, questionnaireData.getDescription());
 
             if(Objects.isNull(questionnaireData.getMenu()) || questionnaireData.getMenu().isEmpty()){
                 replyToUser.setReplyMarkup(buttonsService.setBacktrackButton());
+                replyToUser.setParseMode(ParseMode.MARKDOWN);
             }
             messages.add(replyToUser);
 
             if(Objects.nonNull(questionnaireData.getMenu()) && !questionnaireData.getMenu().isEmpty()){
                 replyToUser = new SendMessage(chatId, questionnaireData.getMenu());
                 replyToUser.setReplyMarkup(buttonsService.setBacktrackButton());
+                replyToUser.setParseMode(ParseMode.MARKDOWN);
                 messages.add(replyToUser);
             }
         }

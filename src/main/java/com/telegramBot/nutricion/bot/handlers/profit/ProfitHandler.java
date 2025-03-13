@@ -63,7 +63,7 @@ public class ProfitHandler  implements InputMessageHandler {
         if (botState.equals(BotState.PRODUCT_PROFIT)) {
             replyToUser = messagesService.getReplyMessage(chatId, "reply.askProductProfit");
             replyToUser.setReplyMarkup(buttonsService.setProfitButtons());
-            botCache.setUsersCurrentBotState(userId, BotState.CHOOSE_PRODUCT);
+            botCache.saveUsersCurrentBotState(userId, BotState.CHOOSE_PRODUCT);
         }
 
         if (botState.equals(BotState.CHOOSE_PRODUCT)) {
@@ -141,7 +141,7 @@ public class ProfitHandler  implements InputMessageHandler {
                     replyPhoto.setCaption("Соки");
                     break;
                 case "start":
-                    botCache.setUsersCurrentBotState(userId, BotState.SHOW_START_MENU);
+                    botCache.saveUsersCurrentBotState(userId, BotState.SHOW_START_MENU);
             }
             if(Objects.nonNull(replyPhoto)) {
                 replyPhoto.setReplyMarkup(buttonsService.setProfitButtons());

@@ -12,7 +12,6 @@ import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -77,7 +76,7 @@ public class FeedingUpCalendarHandler implements InputMessageHandler {
         photos.add(rules);
         photos.add(dayVolume);
 
-        botCache.setUsersCurrentBotState(userId, BotState.SHOW_START_MENU);
+        botCache.saveUsersCurrentBotState(userId, BotState.SHOW_START_MENU);
 
         return photos;
     }
